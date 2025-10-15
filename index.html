@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect-NITT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #96A78D;
+            --secondary: #B6CEB4;
+            --tertiary: #D9E9CF;
+            --background: #F0F0F0;
+            --white: #ffffff;
+            --text: #2c3e2f;
+            --shadow: rgba(150, 167, 141, 0.2);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, var(--tertiary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 20px 0;
+            box-shadow: 0 4px 15px var(--shadow);
+            margin-bottom: 30px;
+        }
+
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            color: var(--white);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: var(--white);
+            color: var(--primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--tertiary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+
+        .nav-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .user-info {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px var(--shadow);
+            margin-bottom: 30px;
+            display: none;
+        }
+
+        .user-info h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px var(--shadow);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--tertiary);
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--tertiary);
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(150, 167, 141, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            padding: 8px 20px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .btn-danger {
+            background: #d9534f;
+        }
+
+        .btn-success {
+            background: #5cb85c;
+        }
+
+        .btn-disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .service-item, .friend-item, .person-item {
+            background: var(--tertiary);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .service-item:hover, .friend-item:hover, .person-item:hover {
+            background: var(--secondary);
+            transform: translateX(5px);
+        }
+
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .service-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .price {
+            background: var(--primary);
+            color: var(--white);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .service-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .like-btn {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .like-btn.liked {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .like-count {
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .comment-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid var(--white);
+        }
+
+        .comment {
+            background: var(--white);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .comment-time {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .comment-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .comment-input input {
+            flex: 1;
+        }
+
+        .friend-request-badge {
+            background: #d9534f;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-left: 5px;
+        }
+
+        .page {
+            display: none !important;
+        }
+
+        .page.active {
+            display: block !important;
+        }
+
+        #mainApp .page.active {
+            display: block !important;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .status-pending {
+            background: #f0ad4e;
+            color: white;
+        }
+
+        .status-friends {
+            background: #5cb85c;
+            color: white;
+        }
+
+        .status-used {
+            background: #5cb85c;
+            color: white;
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--tertiary);
+            border-radius: 25px;
+            font-size: 16px;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-bar select {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .provider-info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="card">
+                <h3>Login to Connect-NITT</h3>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="loginRole">
+                        <option value="student">Student</option>
+                        <option value="alumni">Alumni</option>
+                        <option value="faculty">Faculty</option>
+                    </select>
+                </div>
+                <button onclick="login()">Login</button>
+                <!-- <button class="btn-secondary" onclick="showRegister()">Register</button> -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="registerPage" class="page hidden">
+        <div class="login-container">
+            <div class="card">
+                <h3>Register New User</h3>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="registerRole" onchange="switchRegisterRole()">
+                        <option value="student">Student</option>
+                        <option value="alumni">Alumni</option>
+                        <option value="faculty">Faculty</option>
+                    </select>
+                </div>
+
+                <!-- Student Form -->
+                <div id="studentForm">
+                    <div class="form-group"><label>Roll Number</label><input id="s_roll" type="text"></div>
+                    <div class="form-group"><label>Name</label><input id="s_name" type="text"></div>
+                    <div class="form-group"><label>Email</label><input id="s_email" type="email"></div>
+                    <div class="form-group"><label>Password</label><input id="s_password" type="password"></div>
+                    <div class="form-group"><label>Phone</label><input id="s_phone" type="text"></div>
+                    <div class="form-group"><label>Department</label><select id="s_department" onchange="loadBranchList('student')"></select></div>
+                    <div class="form-group"><label>Branch</label><select id="s_branch"></select></div>
+                    <div class="form-group"><label>Course</label><input id="s_course" type="text"></div>
+                    <button onclick="registerUser('student')">Register Student</button>
+                </div>
+
+                <!-- Alumni Form -->
+                <div id="alumniForm" class="hidden">
+                    <div class="form-group"><label>Alumni ID</label><input id="a_id" type="text"></div>
+                    <div class="form-group"><label>Name</label><input id="a_name" type="text"></div>
+                    <div class="form-group"><label>Email</label><input id="a_email" type="email"></div>
+                    <div class="form-group"><label>Password</label><input id="a_password" type="password"></div>
+                    <div class="form-group"><label>Phone</label><input id="a_phone" type="text"></div>
+                    <div class="form-group"><label>Department</label><select id="a_department" onchange="loadBranchList('alumni')"></select></div>
+                    <div class="form-group"><label>Branch</label><select id="a_branch"></select></div>
+                    <div class="form-group"><label>Course</label><input id="a_course" type="text"></div>
+                    <div class="form-group"><label>Pass Out Year</label><input id="a_year" type="number"></div>
+                    <button onclick="registerUser('alumni')">Register Alumni</button>
+                </div>
+
+                <!-- Faculty Form -->
+                <div id="facultyForm" class="hidden">
+                    <div class="form-group"><label>Faculty ID</label><input id="f_id" type="text"></div>
+                    <div class="form-group"><label>Name</label><input id="f_name" type="text"></div>
+                    <div class="form-group"><label>Email</label><input id="f_email" type="email"></div>
+                    <div class="form-group"><label>Password</label><input id="f_password" type="password"></div>
+                    <div class="form-group"><label>Phone</label><input id="f_phone" type="text"></div>
+                    <div class="form-group"><label>Department</label><select id="f_department"></select></div>
+                    <button onclick="registerUser('faculty')">Register Faculty</button>
+                </div>
+
+                <button class="btn-secondary" onclick="showLogin()">Back to Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="page hidden">
+        <header>
+            <div class="container">
+                <h1>🎓 Connect-NITT</h1>
+                <nav>
+                    <button class="nav-btn active" onclick="showPage('servicesPage')">Services</button>
+                    <button class="nav-btn" onclick="showPage('friendsPage')">
+                        Friends
+                        <span id="friendRequestBadge" class="friend-request-badge hidden">0</span>
+                    </button>
+                    <button class="nav-btn" onclick="showPage('studentsPage')">Students</button>
+                    <button class="nav-btn" onclick="showPage('alumniPage')">Alumni</button>
+                    <button class="nav-btn" onclick="showPage('facultyPage')">Faculty</button>
+                    <button class="nav-btn" onclick="logout()">Logout</button>
+                </nav>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="user-info" id="userInfo">
+                <h3>Welcome, <span id="userName"></span>!</h3>
+                <p>Email: <span id="userEmail"></span></p>
+                <p>Role: <span id="userRole"></span></p>
+            </div>
+
+            <!-- Services Page -->
+            <div id="servicesPage" class="page active">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchServiceTab('available')">Available Services</button>
+                    <button class="tab-btn" onclick="switchServiceTab('posted')">My Posted Services</button>
+                    <button class="tab-btn" onclick="switchServiceTab('obtained')">Obtained Services</button>
+                </div>
+
+                <!-- Available Services Tab -->
+                <div id="availableServicesTab">
+                    <div class="card">
+                        <h3>Available Services</h3>
+                        <div class="search-bar">
+                            <input type="text" id="serviceSearch" placeholder="🔍 Search services..." onkeyup="filterServices()">
+                        </div>
+                        <div id="servicesList" class="loading">Loading services...</div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Add New Service</h3>
+                        <div class="form-group">
+                            <label>Service Name</label>
+                            <input type="text" id="serviceName" placeholder="e.g., Tutoring">
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="serviceDescription" rows="3" placeholder="Describe the service..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Price</label>
+                            <input type="number" id="servicePrice" placeholder="0.00" step="0.01">
+                        </div>
+                        <button onclick="addService()">Add Service</button>
+                    </div>
+                </div>
+
+                <!-- Posted Services Tab -->
+                <div id="postedServicesTab" class="hidden">
+                    <div class="card">
+                        <h3>My Posted Services</h3>
+                        <div id="postedServicesList" class="loading">Loading...</div>
+                    </div>
+                </div>
+
+                <!-- Obtained Services Tab -->
+                <div id="obtainedServicesTab" class="hidden">
+                    <div class="card">
+                        <h3>Services I Obtained</h3>
+                        <div id="obtainedServicesList" class="loading">Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Friends Page -->
+            <div id="friendsPage" class="page">
+                <div class="grid">
+                    <div class="card">
+                        <h3>Friend Requests</h3>
+                        <div id="friendRequestsList" class="loading">Loading...</div>
+                    </div>
+
+                    <div class="card">
+                        <h3>My Friends</h3>
+                        <div id="friendsList" class="loading">Loading...</div>
+                    </div>
+
+                    <div class="card">
+                        <h3>People You May Know</h3>
+                        <div id="suggestionsList" class="loading">Loading...</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Send Friend Request</h3>
+                    <div class="form-group">
+                        <label>Friend's Email</label>
+                        <input type="email" id="friendEmail" placeholder="friend@nitt.edu">
+                    </div>
+                    <button onclick="sendFriendRequest()">Send Request</button>
+                </div>
+            </div>
+
+            <!-- Students Page -->
+            <div id="studentsPage" class="page">
+                <div class="card">
+                    <h3>All Students</h3>
+                    <div class="filter-bar">
+                        <select id="studentDeptFilter" onchange="loadStudents()">
+                            <option value="">All Departments</option>
+                        </select>
+                        <select id="studentBranchFilter" onchange="loadStudents()">
+                            <option value="">All Branches</option>
+                        </select>
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" id="studentSearch" placeholder="🔍 Search students..." onkeyup="filterStudents()">
+                    </div>
+                    <div id="studentsList" class="loading">Loading students...</div>
+                </div>
+            </div>
+
+            <!-- Alumni Page -->
+            <div id="alumniPage" class="page">
+                <div class="card">
+                    <h3>All Alumni</h3>
+                    <div class="filter-bar">
+                        <select id="alumniDeptFilter" onchange="loadAlumni()">
+                            <option value="">All Departments</option>
+                        </select>
+                        <select id="alumniBranchFilter" onchange="loadAlumni()">
+                            <option value="">All Branches</option>
+                        </select>
+                        <input type="number" id="alumniYearFilter" placeholder="Pass out year" onchange="loadAlumni()">
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" id="alumniSearch" placeholder="🔍 Search alumni..." onkeyup="filterAlumni()">
+                    </div>
+                    <div id="alumniList" class="loading">Loading alumni...</div>
+                </div>
+            </div>
+
+            <!-- Faculty Page -->
+            <div id="facultyPage" class="page">
+                <div class="card">
+                    <h3>All Faculty</h3>
+                    <div class="filter-bar">
+                        <select id="facultyDeptFilter" onchange="loadFaculty()">
+                            <option value="">All Departments</option>
+                        </select>
+                    </div>
+                    <div class="search-bar">
+                        <input type="text" id="facultySearch" placeholder="🔍 Search faculty..." onkeyup="filterFaculty()">
+                    </div>
+                    <div id="facultyList" class="loading">Loading faculty...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8001';
+        let currentUser = {
+            email: '',
+            name: '',
+            role: ''
+        };
+        let allServices = [];
+        let allStudents = [];
+        let allAlumni = [];
+        let allFaculty = [];
+        let departments = [];
+
+        // Login Function
+        async function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const role = document.getElementById('loginRole').value;
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, role })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    currentUser = { email, name: data.message.split('Welcome ')[1], role };
+                    document.getElementById('loginPage').classList.remove('active');
+                    document.getElementById('loginPage').classList.add('hidden');
+                    document.getElementById('mainApp').classList.remove('hidden');
+                    document.getElementById('mainApp').classList.add('active');
+                    
+                    document.getElementById('userName').textContent = currentUser.name;
+                    document.getElementById('userEmail').textContent = currentUser.email;
+                    document.getElementById('userRole').textContent = currentUser.role;
+                    document.getElementById('userInfo').style.display = 'block';
+
+                    await loadDepartments();
+                    loadServices();
+                    loadFriendRequests();
+                } else {
+                    alert(data.detail || 'Login failed');
+                }
+            } catch (error) {
+                alert('Error connecting to server');
+                console.error(error);
+            }
+        }
+
+        // Show Register Page
+        function showRegister() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('active');
+            document.getElementById('registerPage').classList.remove('hidden');
+            document.getElementById('registerPage').classList.add('active');
+            loadDepartmentsForRegister();
+            switchRegisterRole();
+        }
+
+        // Back to Login
+        function showLogin() {
+            document.getElementById('registerPage').classList.add('hidden');
+            document.getElementById('registerPage').classList.remove('active');
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('loginPage').classList.add('active');
+        }
+
+        // Switch Role Form
+        function switchRegisterRole() {
+            const role = document.getElementById('registerRole').value;
+            document.getElementById('studentForm').classList.add('hidden');
+            document.getElementById('alumniForm').classList.add('hidden');
+            document.getElementById('facultyForm').classList.add('hidden');
+            document.getElementById(role + 'Form').classList.remove('hidden');
+        }
+
+        // Load Departments for Register
+        async function loadDepartmentsForRegister() {
+            try {
+                const response = await fetch(`${API_URL}/departments`);
+                const data = await response.json();
+                
+                window.allDepartments = data.map(d => d.department);
+
+                ['s_department', 'a_department', 'f_department'].forEach(id => {
+                    const select = document.getElementById(id);
+                    select.innerHTML = `<option value="">Select Department</option>` +
+                        window.allDepartments.map(d => `<option value="${d.DepartmentId}">${d.name}</option>`).join('');
+                });
+            } catch (err) {
+                console.error('Failed to load departments:', err);
+            }
+        }
+
+        // Load Branches when Department selected
+        function loadBranchList(role) {
+            const deptId = document.getElementById(role[0] + '_department').value;
+            const dept = window.allDepartments.find(d => d.DepartmentId === deptId);
+            const branchSelect = document.getElementById(role[0] + '_branch');
+            
+            if (dept && dept.branches && dept.branches.length > 0) {
+                branchSelect.innerHTML = dept.branches
+                    .map(b => `<option value="${b}">${b}</option>`)
+                    .join('');
+            } else {
+                branchSelect.innerHTML = `<option value="">No branches available</option>`;
+            }
+        }
+
+        // Register Function
+        async function registerUser(role) {
+            let url = `${API_URL}/add/${role}`;
+            let payload = {};
+
+            if (role === 'student') {
+                payload = {
+                    roll_number: document.getElementById('s_roll').value,
+                    password: document.getElementById('s_password').value,
+                    name: document.getElementById('s_name').value,
+                    phone_number: document.getElementById('s_phone').value,
+                    email: document.getElementById('s_email').value,
+                    department_id: document.getElementById('s_department').value,
+                    branch_name: document.getElementById('s_branch').value,
+                    course: document.getElementById('s_course').value
+                };
+            } else if (role === 'alumni') {
+                payload = {
+                    alumni_id: document.getElementById('a_id').value,
+                    password: document.getElementById('a_password').value,
+                    name: document.getElementById('a_name').value,
+                    phone_number: document.getElementById('a_phone').value,
+                    email: document.getElementById('a_email').value,
+                    department_id: document.getElementById('a_department').value,
+                    branch_name: document.getElementById('a_branch').value,
+                    course: document.getElementById('a_course').value,
+                    pass_out_year: parseInt(document.getElementById('a_year').value)
+                };
+            } else {
+                payload = {
+                    faculty_id: document.getElementById('f_id').value,
+                    password: document.getElementById('f_password').value,
+                    name: document.getElementById('f_name').value,
+                    phone_number: document.getElementById('f_phone').value,
+                    email: document.getElementById('f_email').value,
+                    department_id: document.getElementById('f_department').value,
+                };
+            }
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`${role} registered successfully`);
+                    showLogin();
+                } else {
+                    alert(data.detail || 'Registration failed');
+                }
+            } catch (err) {
+                alert('Error registering user');
+                console.error(err);
+            }
+        }
+
+        // Logout Function
+        function logout() {
+            currentUser = { email: '', name: '', role: '' };
+            document.getElementById('mainApp').classList.remove('active');
+            document.getElementById('mainApp').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('loginPage').classList.add('active');
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+
+        // Show Page - FIXED VERSION
+        function showPage(pageId) {
+            console.log('Showing page:', pageId);
+            
+            const pagesToHide = ['servicesPage', 'friendsPage', 'studentsPage', 'alumniPage', 'facultyPage'];
+            pagesToHide.forEach(id => {
+                const page = document.getElementById(id);
+                if (page) {
+                    page.classList.remove('active');
+                }
+            });
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                console.log('Page shown:', pageId);
+            } else {
+                console.error('Page not found:', pageId);
+            }
+            
+            if (window.event && window.event.target) {
+                window.event.target.classList.add('active');
+            }
+
+            if (pageId === 'friendsPage') {
+                loadFriends();
+                loadFriendRequests();
+                loadSuggestions();
+            } else if (pageId === 'servicesPage') {
+                loadServices();
+            } else if (pageId === 'studentsPage') {
+                loadStudents();
+            } else if (pageId === 'alumniPage') {
+                loadAlumni();
+            } else if (pageId === 'facultyPage') {
+                loadFaculty();
+            }
+        }
+
+        function switchServiceTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (window.event && window.event.target) {
+                window.event.target.classList.add('active');
+            }
+
+            document.getElementById('availableServicesTab').classList.add('hidden');
+            document.getElementById('postedServicesTab').classList.add('hidden');
+            document.getElementById('obtainedServicesTab').classList.add('hidden');
+
+            if (tab === 'available') {
+                document.getElementById('availableServicesTab').classList.remove('hidden');
+                loadServices();
+            } else if (tab === 'posted') {
+                document.getElementById('postedServicesTab').classList.remove('hidden');
+                loadPostedServices();
+            } else {
+                document.getElementById('obtainedServicesTab').classList.remove('hidden');
+                loadObtainedServices();
+            }
+        }
+
+        // Load Departments
+        async function loadDepartments() {
+            try {
+                const response = await fetch(`${API_URL}/departments`);
+                departments = await response.json();
+                
+                const deptOptions = departments.map(d => 
+                    `<option value="${d.department.DepartmentId}">${d.department.name}</option>`
+                ).join('');
+                
+                document.getElementById('studentDeptFilter').innerHTML += deptOptions;
+                document.getElementById('alumniDeptFilter').innerHTML += deptOptions;
+                document.getElementById('facultyDeptFilter').innerHTML += deptOptions;
+            } catch (error) {
+                console.error('Error loading departments:', error);
+            }
+        }
+
+        // Load Services - FIXED VERSION
+        async function loadServices() {
+            try {
+                const response = await fetch(`${API_URL}/services`);
+                let services = await response.json();
+
+                services = services.filter(s => {
+                    const service = s.service;
+                    const providerEmails = (service.providers || []).map(p => p.email);
+                    const usedBy = service.used_by || [];
+                    return !providerEmails.includes(currentUser.email) && !usedBy.includes(currentUser.email);
+                });
+
+                allServices = services;
+                displayServices(services);
+            } catch (error) {
+                document.getElementById('servicesList').innerHTML = '<p>Error loading services</p>';
+                console.error(error);
+            }
+        }
+
+        async function loadPostedServices() {
+    try {
+        // Call the dedicated endpoint for posted services
+        const response = await fetch(`${API_URL}/services/posted/${currentUser.email}`);
+        const services = await response.json();
+
+        const container = document.getElementById('postedServicesList');
+        if (services.length === 0) {
+            container.innerHTML = '<p>You have not posted any services yet.</p>';
+            return;
+        }
+
+        container.innerHTML = services.map(s => {
+            const service = s.service;
+            const usedCount = (service.used_by && service.used_by.length) ? service.used_by.length : 0;
+            
+            return `
+                <div class="service-item">
+                    <div class="service-header">
+                        <div>
+                            <div class="service-name">${service.name}</div>
+                            <p style="font-size: 12px; color: #666; margin-top: 5px;">
+                                ${usedCount > 0 ? `Used by ${usedCount} person(s)` : 'Not used yet'}
+                            </p>
+                        </div>
+                        <div class="price">₹${service.price}</div>
+                    </div>
+                    <p>${service.description || 'No description'}</p>
+                    
+                    ${service.used_by && service.used_by.length > 0 ? `
+                        <p style="font-size: 12px; margin-top: 10px; color: #666;">
+                            <strong>Used by:</strong> ${service.used_by.map(u => u.email).join(', ')}
+                        </p>
+                    ` : ''}
+                    
+                    <button class="btn-danger" onclick="deleteService('${service.name}')">Delete</button>
+                </div>
+            `;
+        }).join('');
+    } catch (error) {
+        document.getElementById('postedServicesList').innerHTML = '<p>Error loading posted services</p>';
+        console.error('Error loading posted services', error);
+    }
+}
+
+        async function loadObtainedServices() {
+            try {
+                const response = await fetch(`${API_URL}/services/my/${currentUser.email}`);
+                const obtained = await response.json();
+                const container = document.getElementById('obtainedServicesList');
+
+                if (obtained.length === 0) {
+                    container.innerHTML = '<p>You have not obtained any services.</p>';
+                    return;
+                }
+
+                container.innerHTML = obtained.map(s => {
+                    const service = s.service;
+                    return `
+                        <div class="service-item">
+                            <div class="service-header">
+                                <div class="service-name">${service.name}</div>
+                                <div class="price">₹${service.price}</div>
+                            </div>
+                            <p>${service.description || 'No description'}</p>
+                            <span class="status-badge status-used">✓ Obtained</span>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading obtained services', error);
+            }
+        }
+
+        async function deleteService(serviceName) {
+            if (!confirm('Are you sure you want to delete this service?')) return;
+            try {
+                const response = await fetch(`${API_URL}/services/${serviceName}`, { method: 'DELETE' });
+                const data = await response.json();
+                alert(data.message);
+                loadPostedServices();
+            } catch (error) {
+                console.error('Error deleting service', error);
+            }
+        }
+
+        function displayServices(services) {
+    const container = document.getElementById('servicesList');
+    
+    // Filter to show only unused services
+    const unusedServices = services.filter(s => {
+        const service = s.service;
+        const usedBy = service.used_by || [];
+        return usedBy.length === 0;
+    });
+    
+    if (unusedServices.length === 0) {
+        container.innerHTML = '<p>No services available</p>';
+        return;
+    }
+
+    container.innerHTML = unusedServices.map(s => {
+        const service = s.service;
+        const isLiked = service.liked_by && service.liked_by.includes(currentUser.email);
+        const comments = service.comments || [];
+        const provider = service.providers && service.providers.length > 0 ? service.providers[0] : null;
+
+        return `
+            <div class="service-item">
+                <div class="service-header">
+                    <div>
+                        <div class="service-name">${service.name}</div>
+                        ${provider ? `<div class="provider-info">Provider: ${provider.name} (${provider.email})</div>` : ''}
+                    </div>
+                    <div class="price">₹${service.price}</div>
+                </div>
+                <p>${service.description || 'No description'}</p>
+                
+                <div class="service-actions">
+                    <button class="like-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${service.name}')">
+                        ${isLiked ? '❤️' : '🤍'} <span class="like-count">${service.like_count || 0}</span>
+                    </button>
+                    <button class="btn-secondary" onclick="buyService('${service.name}')">Use Service</button>
+                </div>
+
+                <div class="comment-section">
+                    <strong>Comments (${comments.length})</strong>
+                    ${comments.map(c => `
+                        <div class="comment">
+                            <div class="comment-header">
+                                <span class="comment-author">${c.user_name || c.user_email}</span>
+                                ${c.user_email === currentUser.email ? `
+                                    <button class="btn-danger" style="padding: 5px 10px; font-size: 12px;" 
+                                        onclick="deleteComment('${service.name}', '${c.id}')">Delete</button>
+                                ` : ''}
+                            </div>
+                            <p>${c.text}</p>
+                        </div>
+                    `).join('')}
+                    
+                    <div class="comment-input">
+                        <input type="text" id="comment-${service.name}" placeholder="Add a comment...">
+                        <button class="btn-secondary" onclick="addComment('${service.name}')">Comment</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+        function filterServices() {
+            const search = document.getElementById('serviceSearch').value.toLowerCase();
+            const filtered = allServices.filter(s => 
+                s.service.name.toLowerCase().includes(search) ||
+                (s.service.description && s.service.description.toLowerCase().includes(search))
+            );
+            displayServices(filtered);
+        }
+
+        async function addService() {
+            const name = document.getElementById('serviceName').value;
+            const description = document.getElementById('serviceDescription').value;
+            const price = parseFloat(document.getElementById('servicePrice').value);
+
+            if (!name || !price) {
+                alert('Please fill in service name and price');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/add/service`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        name, 
+                        description, 
+                        price,
+                        provider_email: currentUser.email
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Service added successfully!');
+                    document.getElementById('serviceName').value = '';
+                    document.getElementById('serviceDescription').value = '';
+                    document.getElementById('servicePrice').value = '';
+                    loadServices();
+                } else {
+                    const data = await response.json();
+                    alert(data.detail || 'Error adding service');
+                }
+            } catch (error) {
+                alert('Error adding service');
+                console.error(error);
+            }
+        }
+
+        async function toggleLike(serviceName) {
+            try {
+                const response = await fetch(`${API_URL}/services/like`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        service_name: serviceName,
+                        user_email: currentUser.email
+                    })
+                });
+
+                if (response.ok) {
+                    loadServices();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function addComment(serviceName) {
+            const input = document.getElementById(`comment-${serviceName}`);
+            const text = input.value.trim();
+
+            if (!text) return;
+
+            try {
+                const response = await fetch(`${API_URL}/services/comment`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        service_name: serviceName,
+                        user_email: currentUser.email,
+                        comment_text: text
+                    })
+                });
+
+                if (response.ok) {
+                    input.value = '';
+                    loadServices();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function deleteComment(serviceName, commentId) {
+            if (!confirm('Delete this comment?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/services/comment`, {
+                    method: 'DELETE',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        service_name: serviceName,
+                        user_email: currentUser.email,
+                        comment_id: commentId
+                    })
+                });
+
+                if (response.ok) {
+                    loadServices();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function buyService(serviceName) {
+            try {
+                const response = await fetch(`${API_URL}/buy_service`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        service_name: serviceName,
+                        buyer_email: currentUser.email
+                    })
+                });
+
+                const data = await response.json();
+                alert(data.message);
+                loadServices();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function loadStudents() {
+    try {
+        const dept = document.getElementById('studentDeptFilter').value;
+        const branch = document.getElementById('studentBranchFilter').value;
+        
+        // Populate branch filter based on selected department
+        if (dept) {
+            await populateBranchFilter('studentBranchFilter', dept);
+        } else {
+            document.getElementById('studentBranchFilter').innerHTML = '<option value="">All Branches</option>';
+        }
+        
+        let url = `${API_URL}/students?`;
+        if (dept) url += `department=${dept}&`;
+        if (branch) url += `branch=${branch}`;
+        
+        const response = await fetch(url);
+        allStudents = await response.json();
+        displayStudents(allStudents);
+    } catch (error) {
+        document.getElementById('studentsList').innerHTML = '<p>Error loading students</p>';
+        console.error(error);
+    }
+}
+
+        function displayStudents(students) {
+            const container = document.getElementById('studentsList');
+            
+            if (students.length === 0) {
+                container.innerHTML = '<p>No students found</p>';
+                return;
+            }
+
+            container.innerHTML = students.map(s => {
+                const student = s.student;
+                
+                return `
+                    <div class="person-item">
+                        <strong>${student.name}</strong>
+                        <p>📧 ${student.email}</p>
+                        <p>🎓 ${student.Branch} - ${student.Department}</p>
+                        <p>📞 ${student.phone_number}</p>
+                        ${student.current_sem ? `<p>Semester: ${student.current_sem}</p>` : ''}
+                        ${student.current_gpa ? `<p>GPA: ${student.current_gpa}</p>` : ''}
+                        ${student.email !== currentUser.email ? 
+                            `<button class="btn-secondary" style="margin-top: 10px;" onclick="sendFriendRequestTo('${student.email}')">Add Friend</button>` 
+                            : '<span class="status-badge status-friends">You</span>'}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterStudents() {
+            const search = document.getElementById('studentSearch').value.toLowerCase();
+            const filtered = allStudents.filter(s => 
+                s.student.name.toLowerCase().includes(search) ||
+                s.student.email.toLowerCase().includes(search) ||
+                (s.student.Branch && s.student.Branch.toLowerCase().includes(search))
+            );
+            displayStudents(filtered);
+        }
+
+        async function loadAlumni() {
+    try {
+        const dept = document.getElementById('alumniDeptFilter').value;
+        const branch = document.getElementById('alumniBranchFilter').value;
+        const year = document.getElementById('alumniYearFilter').value;
+        
+        // Populate branch filter based on selected department
+        if (dept) {
+            await populateBranchFilter('alumniBranchFilter', dept);
+        } else {
+            document.getElementById('alumniBranchFilter').innerHTML = '<option value="">All Branches</option>';
+        }
+        
+        let url = `${API_URL}/alumni?`;
+        if (dept) url += `department=${dept}&`;
+        if (branch) url += `branch=${branch}&`;
+        if (year) url += `pass_out=${year}`;
+        
+        const response = await fetch(url);
+        allAlumni = await response.json();
+        displayAlumni(allAlumni);
+    } catch (error) {
+        document.getElementById('alumniList').innerHTML = '<p>Error loading alumni</p>';
+        console.error(error);
+    }
+}
+
+async function populateBranchFilter(selectId, departmentId) {
+    const dept = departments.find(d => d.department.DepartmentId === departmentId);
+    const branchSelect = document.getElementById(selectId);
+    
+    if (dept && dept.department.branches && dept.department.branches.length > 0) {
+        branchSelect.innerHTML = '<option value="">All Branches</option>' +
+            dept.department.branches.map(b => `<option value="${b}">${b}</option>`).join('');
+    } else {
+        branchSelect.innerHTML = '<option value="">All Branches</option>';
+    }
+}
+
+        function displayAlumni(alumni) {
+            const container = document.getElementById('alumniList');
+            
+            if (alumni.length === 0) {
+                container.innerHTML = '<p>No alumni found</p>';
+                return;
+            }
+
+            container.innerHTML = alumni.map(a => {
+                const alum = a.alumni;
+                
+                return `
+                    <div class="person-item">
+                        <strong>${alum.name}</strong>
+                        <p>📧 ${alum.email}</p>
+                        <p>🎓 ${alum.Branch} - ${alum.Department}</p>
+                        <p>📞 ${alum.phone_number}</p>
+                        <p>🎓 Pass Out: ${alum.pass_out_year}</p>
+                        ${alum.current_company ? `<p>🏢 ${alum.current_company}</p>` : ''}
+                        ${alum.current_role ? `<p>💼 ${alum.current_role}</p>` : ''}
+                        ${alum.work_experience ? `<p>Experience: ${alum.work_experience} years</p>` : ''}
+                        ${alum.email !== currentUser.email ? 
+                            `<button class="btn-secondary" style="margin-top: 10px;" onclick="sendFriendRequestTo('${alum.email}')">Add Friend</button>` 
+                            : '<span class="status-badge status-friends">You</span>'}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterAlumni() {
+            const search = document.getElementById('alumniSearch').value.toLowerCase();
+            const filtered = allAlumni.filter(a => 
+                a.alumni.name.toLowerCase().includes(search) ||
+                a.alumni.email.toLowerCase().includes(search) ||
+                (a.alumni.current_company && a.alumni.current_company.toLowerCase().includes(search)) ||
+                (a.alumni.Branch && a.alumni.Branch.toLowerCase().includes(search))
+            );
+            displayAlumni(filtered);
+        }
+
+        async function loadFaculty() {
+            try {
+                const dept = document.getElementById('facultyDeptFilter').value;
+                
+                let url = `${API_URL}/faculty?`;
+                if (dept) url += `department=${dept}`;
+                
+                const response = await fetch(url);
+                allFaculty = await response.json();
+                displayFaculty(allFaculty);
+            } catch (error) {
+                document.getElementById('facultyList').innerHTML = '<p>Error loading faculty</p>';
+                console.error(error);
+            }
+        }
+
+        function displayFaculty(faculty) {
+            const container = document.getElementById('facultyList');
+            
+            if (faculty.length === 0) {
+                container.innerHTML = '<p>No faculty found</p>';
+                return;
+            }
+
+            container.innerHTML = faculty.map(f => {
+                const fac = f.faculty;
+                
+                return `
+                    <div class="person-item">
+                        <strong>${fac.name}</strong>
+                        <p>📧 ${fac.email}</p>
+                        <p>🏛️ ${fac.Department}</p>
+                        <p>📞 ${fac.phone_number}</p>
+                        ${fac.subjects && fac.subjects.length > 0 ? `<p>📚 Subjects: ${fac.subjects.join(', ')}</p>` : ''}
+                        ${fac.email !== currentUser.email ? 
+                            `<button class="btn-secondary" style="margin-top: 10px;" onclick="sendFriendRequestTo('${fac.email}')">Add Friend</button>` 
+                            : '<span class="status-badge status-friends">You</span>'}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterFaculty() {
+            const search = document.getElementById('facultySearch').value.toLowerCase();
+            const filtered = allFaculty.filter(f => 
+                f.faculty.name.toLowerCase().includes(search) ||
+                f.faculty.email.toLowerCase().includes(search) ||
+                (f.faculty.Department && f.faculty.Department.toLowerCase().includes(search))
+            );
+            displayFaculty(filtered);
+        }
+
+        async function loadFriends() {
+            try {
+                const response = await fetch(`${API_URL}/friends/${currentUser.email}`);
+                const data = await response.json();
+                
+                const container = document.getElementById('friendsList');
+                if (data.friends.length === 0) {
+                    container.innerHTML = '<p>No friends yet</p>';
+                    return;
+                }
+
+                container.innerHTML = data.friends.map(f => `
+                    <div class="friend-item">
+                        <strong>${f.friend.name}</strong>
+                        <p>${f.friend.email}</p>
+                        <p style="font-size: 12px; color: #666;">Friends since: ${new Date(f.friend.since).toLocaleDateString()}</p>
+                        <button class="btn-danger" style="margin-top: 10px;" onclick="unfriend('${f.friend.email}')">Unfriend</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                document.getElementById('friendsList').innerHTML = '<p>Error loading friends</p>';
+                console.error(error);
+            }
+        }
+
+        async function loadFriendRequests() {
+            try {
+                const response = await fetch(`${API_URL}/friends/requests/received/${currentUser.email}`);
+                const data = await response.json();
+                
+                const badge = document.getElementById('friendRequestBadge');
+                if (data.requests.length > 0) {
+                    badge.textContent = data.requests.length;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+
+                const container = document.getElementById('friendRequestsList');
+                if (data.requests.length === 0) {
+                    container.innerHTML = '<p>No pending requests</p>';
+                    return;
+                }
+
+                container.innerHTML = data.requests.map(r => `
+                    <div class="friend-item">
+                        <strong>${r.request.name}</strong>
+                        <p>${r.request.email}</p>
+                        <div style="margin-top: 10px;">
+                            <button class="btn-secondary" onclick="acceptFriend('${r.request.email}')">Accept</button>
+                            <button class="btn-danger" onclick="rejectFriend('${r.request.email}')">Reject</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function loadSuggestions() {
+            try {
+                const response = await fetch(`${API_URL}/friends/suggestions/${currentUser.email}`);
+                const data = await response.json();
+                
+                const container = document.getElementById('suggestionsList');
+                if (data.suggestions.length === 0) {
+                    container.innerHTML = '<p>No suggestions available</p>';
+                    return;
+                }
+
+                container.innerHTML = data.suggestions.map(s => {
+                    const labels = s.suggestion.labels || [];
+                    const role = labels.find(l => ['Student', 'Alumni', 'Faculty'].includes(l)) || 'User';
+                    
+                    return `
+                        <div class="friend-item">
+                            <strong>${s.suggestion.name}</strong>
+                            <p>${s.suggestion.email}</p>
+                            <p style="font-size: 12px; color: #666;">Role: ${role}</p>
+                            ${s.mutual_count > 0 ? `<p style="font-size: 12px; color: #666;">👥 ${s.mutual_count} mutual friends</p>` : ''}
+                            ${s.same_dept ? '<p style="font-size: 12px; color: #5cb85c;">✓ Same department</p>' : ''}
+                            <button class="btn-secondary" style="margin-top: 10px;" onclick="sendFriendRequestTo('${s.suggestion.email}')">Add Friend</button>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                document.getElementById('suggestionsList').innerHTML = '<p>Error loading suggestions</p>';
+                console.error(error);
+            }
+        }
+
+        async function sendFriendRequest() {
+            const email = document.getElementById('friendEmail').value;
+            if (!email) {
+                alert('Please enter an email');
+                return;
+            }
+            await sendFriendRequestTo(email);
+            document.getElementById('friendEmail').value = '';
+        }
+
+        async function sendFriendRequestTo(toEmail) {
+            try {
+                const response = await fetch(`${API_URL}/friends/request`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        from_email: currentUser.email,
+                        to_email: toEmail
+                    })
+                });
+
+                const data = await response.json();
+                alert(data.message || data.detail);
+                if (response.ok) {
+                    loadSuggestions();
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function acceptFriend(fromEmail) {
+            try {
+                const response = await fetch(`${API_URL}/friends/accept`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        from_email: fromEmail,
+                        to_email: currentUser.email
+                    })
+                });
+
+                const data = await response.json();
+                alert(data.message);
+                loadFriends();
+                loadFriendRequests();
+                loadSuggestions();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function rejectFriend(fromEmail) {
+            try {
+                const response = await fetch(`${API_URL}/friends/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        from_email: fromEmail,
+                        to_email: currentUser.email
+                    })
+                });
+
+                const data = await response.json();
+                alert(data.message);
+                loadFriendRequests();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function unfriend(friendEmail) {
+            if (!confirm('Remove this friend?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}/friends/unfriend`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user1_email: currentUser.email,
+                        user2_email: friendEmail
+                    })
+                });
+
+                const data = await response.json();
+                alert(data.message);
+                loadFriends();
+                loadSuggestions();
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            switchRegisterRole();
+        });
+    </script>
+</body>
+</html>
